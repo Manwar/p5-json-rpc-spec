@@ -71,14 +71,15 @@ sub parse {
 sub _trigger {
     my ($self, $name, $params) = @_;
     my $router  = $self->router;
-    my $matched = $router->match($name);
+    my ($stuff, $matched) = $router->match('/'.$name);
 
     # rpc call of non-existent method:
-    unless ($matched) {
+    unless ($stuff) {
         Carp::croak 'rpc_method_not_found on trigger';
     }
-    my $cb = delete $matched->{$self->_callback_key};
-    return $cb->($params, $matched);
+    my %stuff = (%$stuff, %$matched);
+    my $cb = delete $stuff{$self->_callback_key};
+    return $cb->($params, {%stuff});
 }
 
 1;

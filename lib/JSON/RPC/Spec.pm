@@ -6,7 +6,7 @@ use Carp ();
 use version; our $VERSION = version->declare("v1.0.1");
 
 use Try::Tiny;
-use Router::Simple;
+use Router::Boom;
 use JSON::RPC::Spec::Procedure;
 use JSON::RPC::Spec::Client;
 
@@ -17,7 +17,7 @@ use constant DEBUG => $ENV{PERL_JSON_RPC_SPEC_DEBUG} || 0;
 
 has router => (
     is      => 'ro',
-    default => sub { Router::Simple->new },
+    default => sub { Router::Boom->new },
     isa     => sub {
         my $self = shift;
         $self->can('match') or Carp::croak('method match required.');
@@ -25,8 +25,7 @@ has router => (
 );
 
 has _procedure => (
-    is   => 'ro',
-    lazy => 1,
+    is   => 'lazy',
     default =>
       sub { JSON::RPC::Spec::Procedure->new(router => shift->router) },
 );
@@ -118,7 +117,7 @@ sub register {
     if (ref $cb ne 'CODE') {
         Carp::croak('code required');
     }
-    $self->router->connect($pattern, {$self->_callback_key => $cb}, {});
+    $self->router->add($pattern, {$self->_callback_key => $cb});
     return $self;
 }
 

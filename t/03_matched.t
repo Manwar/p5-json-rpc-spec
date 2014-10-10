@@ -4,10 +4,10 @@ use Test::Fatal;
 
 use JSON::RPC::Spec;
 use JSON::MaybeXS qw(JSON);
-use Router::Simple;
+use Router::Boom;
 
 my $coder  = JSON->new->utf8;
-my $router = Router::Simple->new;
+my $router = Router::Boom->new;
 
 my $rpc;
 

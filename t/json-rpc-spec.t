@@ -16,7 +16,7 @@ subtest 'standard' => sub {
     is(exception { $obj = JSON::RPC::Spec->new }, undef, 'new')
       or diag explain $obj;
     like ref $obj->coder, qr/JSON/, 'coder like JSON' or diag explain $obj;
-    isa_ok $obj->router,     'Router::Simple'             or diag explain $obj;
+    isa_ok $obj->router,     'Router::Boom'             or diag explain $obj;
     isa_ok $obj->_procedure, 'JSON::RPC::Spec::Procedure' or diag explain $obj;
     is $obj->_jsonrpc, '2.0', '_jsonrpc default' or diag explain $obj;
 };

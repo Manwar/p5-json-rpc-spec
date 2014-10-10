@@ -2,11 +2,11 @@ use strict;
 use Test::More 0.98;
 use Test::Fatal;
 
-use Router::Simple;
+use Router::Boom;
 use JSON::RPC::Spec::Procedure;
 
-my $router = Router::Simple->new;
-$router->connect(
+my $router = Router::Boom->new;
+$router->add(
     echo => {
         '.callback' => sub { $_[0] }
     }
